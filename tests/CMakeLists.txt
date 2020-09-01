@@ -1,0 +1,15 @@
+set(SOURCES_WITHOUT_MAIN ${SOURCES})
+list(REMOVE_ITEM SOURCES_WITHOUT_MAIN ${PROJECT_SOURCE_DIR}/sources/main.cc)
+file(GLOB TEST_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cc)
+file(GLOB TEST_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
+
+set(BINARY ${CMAKE_PROJECT_NAME}_Test)
+add_executable(${BINARY} ${TEST_SOURCES} ${SOURCES_WITHOUT_MAIN})
+
+find_package(GTest CONFIG REQUIRED)
+
+target_include_directories(${BINARY} PUBLIC ${INCLUDES} ${TEST_INCLUDES})
+target_link_libraries(${BINARY} GTest::gtest)
+
+enable_testing()
+add_test(NAME ${BINARY} COMMAND ${BINARY})
